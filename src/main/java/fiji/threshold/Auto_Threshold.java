@@ -568,11 +568,15 @@ public class Auto_Threshold implements PlugIn {
 		for (int threshold = first; threshold <= last; threshold++) {
 			double entropy = 0;
 			int mu = (int)Math.round(W[threshold] / S[threshold]);
-			for (int i = first; i <= threshold; i++)
-				entropy += Smu[Math.abs(i - mu)] * data[i];
+			for (int i = first; i <= threshold; i++) {
+				int smu = Math.abs( i - mu ) >= Smu.length ? Smu.length - 1 : Math.abs( i - mu );
+				entropy += Smu[smu] * data[i];
+			}
 			mu = (int)Math.round((W[last] - W[threshold]) / (S[last] - S[threshold]));
-			for (int i = threshold + 1; i <= last; i++)
-				entropy += Smu[Math.abs(i - mu)] * data[i];
+			for (int i = threshold + 1; i <= last; i++) {
+				int smu = Math.abs( i - mu ) >= Smu.length ? Smu.length - 1 : Math.abs( i - mu );
+				entropy += Smu[smu] * data[i];
+			}
 
 			if (bestEntropy > entropy) {
 				bestEntropy = entropy;
